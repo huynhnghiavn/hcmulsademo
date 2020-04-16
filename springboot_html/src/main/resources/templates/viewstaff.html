@@ -1,73 +1,44 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org">
-<head th:replace="../static/index::head">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/layout">
 
+<head>
+    <title>Layout</title>
 </head>
-<body id="page-top">
-<!-- Page Wrapper -->
-<div id="wrapper">
-    <!-- Sidebar -->
-    <ul th:replace="../static/index::#accordionSidebar"></ul>
-    <!-- End of Sidebar -->
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
-        <!-- Main Content -->
-        <div id="content">
-            <!-- Topbar -->
-            <nav th:replace="../static/index::#login">
-                <a class="nav-item" href="#" id="id" >
-                    <span class="fas fa-sign-out-alt mb-4 fa-fw text-white">Logout</span>
-                </a>
-            </nav>
-            <!-- Begin Page Content -->
-            <div class="container">
-                <!-- Page Heading -->
-                <div class=class="row col-md-7 table-responsive">
-                    <table id="staffTable", class="table table-bordered table-sm">
-                        <thead class="thead-light">
-                        <tr>
-                            <th style="text-align:center">Id</th>
-                            <th style="text-align:left">First Name</th>
-                            <th style="text-align:left">Last Name</th>
-                            <th style="text-align:center">Gender</th>
-                            <th style="text-align:left">Address</th>
-                            <th style="text-align:center">Phone</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each ="staff : ${staffs}">
-                            <td align="center" th:utext="${staff.id}">...</td>
-                            <td align="left" th:utext="${staff.firstname}">...</td>
-                            <td align="left" th:utext="${staff.lastname}">...</td>
-                            <td align="center" th:utext="${staff.gender}">...</td>
-                            <td align="left" th:utext="${staff.address}">...</td>
-                            <td align="center" th:utext="${staff.phone}">...</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
 
-                <!-- Content Row -->
-                <div class="row">
 
-                </div>
-            </div>
+<body>
+<!-- Begin Page Content -->
+    <div class="container" layout:fragment="content">
+        <!-- Page Heading -->
+        <h1 class="text-info text-center">
+            Danh Sách Sản Phẩm
+        </h1>
+        <!-- Content Row -->
+        <div class="row">
+            <table id="staffTable", class="table table-bordered table-sm table-striped table-hover">
+                <thead class="table-dark">
+                <tr>
+                    <th style="text-align:center">Id</th>
+                    <th style="text-align:left">First Name</th>
+                    <th style="text-align:left">Last Name</th>
+                    <th style="text-align:center">Gender</th>
+                    <th style="text-align:left">Address</th>
+                    <th style="text-align:center">Phone</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each ="staff : ${staffs}">
+                    <td align="center" th:utext="${staff.id}">...</td>
+                    <td align="left" th:utext="${staff.firstname}">...</td>
+                    <td align="left" th:utext="${staff.lastname}">...</td>
+                    <td align="center" th:utext="${staff.gender}">...</td>
+                    <td align="left" th:utext="${staff.address}">...</td>
+                    <td align="center" th:utext="${staff.phone}">...</td>
+                </tr>
+                </tbody>
+            </table>
         </div>
-
-    <!-- End of Main Content -->
-
-
-
-    <!-- Footer -->
-    <footer th:replace="../static/index::footer">
-
-    </footer>
-    <!-- End of Footer -->
-</div>
-<!-- End of Content Wrapper -->
-</div>
-<!-- End of Page Wrapper -->
-
+    </div>
 
 </body>
 </html>

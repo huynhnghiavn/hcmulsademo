@@ -1,71 +1,44 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org">
-<head th:replace="../static/index::head">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/layout">
 
+<head>
+    <title>Layout</title>
 </head>
-<body id="page-top">
-<!-- Page Wrapper -->
-<div id="wrapper">
-    <!-- Sidebar -->
-    <ul th:replace="../static/index::#accordionSidebar"></ul>
-    <!-- End of Sidebar -->
 
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
-        <!-- Main Content -->
-        <div id="content">
-            <!-- Topbar -->
-            <nav th:replace="../static/index::#login">
-                <a class="nav-item" href="#" id="id" >
-                    <span class="fas fa-sign-out-alt mb-4 fa-fw text-white">Logout</span>
-                </a>
-            </nav>
-            <!-- Begin Page Content -->
-            <div class="d-flex justify-content-center">
-                <!-- Page Heading -->
-                <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <form action="#" th:action="@{/inputproduct}" th:object="${product}" method="post">
-                        <table>
-                            <tr>
-                                <th style="text-align:right">Id: </th>
-                                <th><input type="text" th:field="*{id}" /></th>
-                            </tr>
-                            <tr>
-                                <th style="text-align:right">Name: </th>
-                                <th><input type="text" th:field="*{name}" /></th>
-                            </tr>
-                            <tr>
-                                <th style="text-align:right">Unit: </th>
-                                <th><input type="text" th:field="*{unit}" /></th>
-                            </tr>
-                            <tr>
-                                <th style="text-align:right">Quantity: </th>
-                                <th><input type="text" th:field="*{quantity}" /></th>
-                            </tr>
-                        </table>
-                        <p></p>
-                        <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
-                    </form>
-                </div>
-                <!-- Content Row -->
-                <div class="row">
 
-                </div>
-            </div>
+<body>
+    <!-- Begin Page Content -->
+    <div class="container justify-content-center" layout:fragment="content">
+        <!-- Page Heading -->
+        <h1 class="text-info">
+            Nhập Sản Phẩm Mới
+        </h1>
+        <!-- Content Row -->
+        <div class="row">
+            <form action="#" th:action="@{/inputproduct}" th:object="${product}" method="post" class="form-group">
+                <table>
+                    <tr>
+                        <th style="text-align:right">Id: </th>
+                        <th><input type="text" th:field="*{id}" class="form-control" placeholder="Nhập mã số sản phẩm" required/></th>
+                    </tr>
+                    <tr>
+                        <th style="text-align:right">Name: </th>
+                        <th><input type="text" th:field="*{name}" class="form-control"placeholder="Nhập tên sản phẩm" required/></th>
+                    </tr>
+                    <tr>
+                        <th style="text-align:right">Unit: </th>
+                        <th><input type="text" th:field="*{unit}" class="form-control" placeholder="Nhập đơn vị" required/></th>
+                    </tr>
+                    <tr>
+                        <th style="text-align:right">Quantity: </th>
+                        <th><input type="text" th:field="*{quantity}" class="form-control" placeholder="Nhập số lượng" required/></th>
+                    </tr>
+                </table>
+                <p></p>
+                <p><input type="submit" value="Submit" class="btn btn-primary"/> <input type="reset" value="Reset" class="btn btn-secondary"/></p>
+            </form>
         </div>
-
-        <!-- End of Main Content -->
-
-        <!-- Footer -->
-        <footer th:replace="../static/index::footer">
-
-        </footer>
-        <!-- End of Footer -->
     </div>
-    <!-- End of Content Wrapper -->
-</div>
-<!-- End of Page Wrapper -->
-
 
 </body>
 </html>
