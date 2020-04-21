@@ -1,13 +1,11 @@
 package vn.edu.hcmulsa.springboot_html.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 import vn.edu.hcmulsa.springboot_html.form.ProductForm;
 import vn.edu.hcmulsa.springboot_html.model.ProductEntity;
 import vn.edu.hcmulsa.springboot_html.repository.ProductRepository;
@@ -40,9 +38,11 @@ public class ProductController {
      * @return
      */
     @GetMapping("/viewproduct")
-    public String viewProduct( Model model) {
-        List<ProductEntity> list = this.productRepository.findAll();
-        model.addAttribute("products", list);
+    public String viewProduct( Model model,@RequestParam(defaultValue = "0") int page) {
+        //List<ProductEntity> list = ;
+        if(page>0) page=page-1;
+        model.addAttribute("products", this.productRepository.findAll(PageRequest.of(page,4)));
+        model.addAttribute("currentPage",page);
         return "viewproduct";
     }
 
@@ -62,7 +62,11 @@ public class ProductController {
         this.productRepository.save(proEntity);
         return ResponseEntity.ok("ok");
     }
-
+    @GetMapping("/DelProduct/{id}")
+    public String delProduct(@PathVariable Integer id) throws Exception {
+        this.productRepository.deleteById(id);
+        return "ok";
+    }
     /**
      * Chuyển dữ liệu từ view vào đối tượng ProductForm trong model
      * @param model
@@ -89,5 +93,7 @@ public class ProductController {
         this.productRepository.save(proEntity);
         return "resultproduct";
     }
-
+    public long countProduct(){
+        return this.productRepository.count();
+    }
 }

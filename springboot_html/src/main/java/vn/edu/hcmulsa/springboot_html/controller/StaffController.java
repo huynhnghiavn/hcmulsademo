@@ -1,13 +1,11 @@
 package vn.edu.hcmulsa.springboot_html.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 import vn.edu.hcmulsa.springboot_html.form.StaffForm;
 import vn.edu.hcmulsa.springboot_html.model.StaffEntity;
 import vn.edu.hcmulsa.springboot_html.repository.StaffRepository;
@@ -41,9 +39,11 @@ public class StaffController {
      * @return
      */
     @GetMapping("/viewstaff")
-    public String viewStaff(Model model){
-        List<StaffEntity> list = this.staffRepository.findAll();
-        model.addAttribute("staffs",list);
+    public String viewStaff(Model model,@RequestParam(defaultValue = "0") int page){
+        //List<StaffEntity> list = this.staffRepository.findAll();
+        if(page>0) page=page-1;
+        model.addAttribute("staffs",this.staffRepository.findAll(PageRequest.of(page,4)));
+        model.addAttribute("currentPage",page);
         return "viewstaff";
     }
 
@@ -93,5 +93,10 @@ public class StaffController {
         staffEntity.setPhone(staffForm.getPhone());
         this.staffRepository.save(staffEntity);
         return "resultstaff";
+    }
+    @GetMapping("DelStaff/{id}")
+    public String delStaff(@PathVariable Integer id) throws Exception{
+        this.staffRepository.deleteById(id);
+        return "ok";
     }
 }

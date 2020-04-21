@@ -9,9 +9,21 @@
 <body>
 <!-- Begin Page Content -->
     <div class="container" layout:fragment="content">
+        <script>
+            function DelStaff(x) {
+                var ok=confirm("Bạn có muốn xóa nhân viên "+x+"?");
+                if(ok==true){
+                    $.get("DelStaff/"+x, function(data, status){
+                        //alert("Data: " + data + "\nStatus: " + status);
+                    });
+                    $(this).ajaxStop(function(){ window.location.reload(); });
+                }
+                window.location.href ="http://localhost:9090/viewstaff";
+            }
+        </script>
         <!-- Page Heading -->
         <h1 class="text-info text-center">
-            Danh Sách Sản Phẩm
+            Danh Sách Nhân Viên
         </h1>
         <!-- Content Row -->
         <div class="row">
@@ -24,6 +36,7 @@
                     <th style="text-align:center">Gender</th>
                     <th style="text-align:left">Address</th>
                     <th style="text-align:center">Phone</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -34,9 +47,18 @@
                     <td align="center" th:utext="${staff.gender}">...</td>
                     <td align="left" th:utext="${staff.address}">...</td>
                     <td align="center" th:utext="${staff.phone}">...</td>
+                    <td><input type="button" class="btn btn-info"name="btnEdit" value="Edit"/>
+                        <input type="button" class="btn btn-danger" name="btnDel" value="Delete" th:onclick="'DelStaff(\''+${staff.id}+'\');'">
+                    </td>
                 </tr>
                 </tbody>
             </table>
+            <ul class="nav nav-pills">
+                <li class="nav-item" th:each="i: ${#numbers.sequence(0,staffs.totalPages-1)}">
+                    <a class="nav-link" th:href="@{/viewstaff/(page=${i}+1)}"
+                       th:classappend="${currentPage}==${i}?'active':''" th:text="${i}+1">Active</a>
+                </li>
+            </ul>
         </div>
     </div>
 

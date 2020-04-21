@@ -9,6 +9,27 @@
 <body>
 <!-- Begin Page Content -->
     <div class="container" layout:fragment="content">
+        <script>
+            function DelProduct(x) {
+                var ok=confirm("Bạn có muốn xóa sản phẩm "+x+"?");
+                if(ok==true){
+                    /*$.post("/DelProduct",
+                        {
+                            Id: x
+                        },
+                        function(data,status){
+                            //alert("Data: " + data + "\nStatus: " + status);
+                            window.location="/viewproduct";
+                        });*/
+                    $.get("DelProduct/"+x, function(data, status){
+                        //alert("Data: " + data + "\nStatus: " + status);
+
+                    });
+                    $(this).ajaxStop(function(){ window.location.reload(); });
+                }
+                window.location.href ="http://localhost:9090/viewproduct";
+            }
+        </script>
         <!-- Page Heading -->
         <h1 class="text-info text-center">
             Danh Sách Sản Phẩm
@@ -31,11 +52,17 @@
                     <td align="left"   th:utext="${product.name}">...</td>
                     <td align="center" th:utext="${product.unit}">...</td>
                     <td align="right"  th:utext="${product.quantity}">...</td>
-                    <td align="right"><input type="submit" class="btn btn-info" value="Sửa" name="update">
-                        <input type="submit" class="btn btn-danger" value="Xóa" name="Delete"></td>
+                    <td align="right"><input type="submit" class="btn btn-info" value="Edit" name="update"  >
+                        <input type="submit" class="btn btn-danger" value="Xóa" name="Delete" th:onclick="'DelProduct(\'' + ${product.id} + '\');'"></td>
                 </tr>
                 </tbody>
             </table>
+            <ul class="nav nav-pills">
+                <li class="nav-item" th:each="i: ${#numbers.sequence(0,products.totalPages-1)}">
+                    <a class="nav-link" th:href="@{/viewproduct/(page=${i}+1)}"
+                       th:classappend="${currentPage}==${i}?'active':''" th:text="${i}+1">Active</a>
+                </li>
+            </ul>
         </div>
     </div>
 
