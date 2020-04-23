@@ -10,6 +10,7 @@
 <!-- Begin Page Content -->
     <div class="container" layout:fragment="content">
         <script>
+
             function DelProduct(x) {
                 var ok=confirm("Bạn có muốn xóa sản phẩm "+x+"?");
                 if(ok==true){
@@ -21,13 +22,29 @@
                             //alert("Data: " + data + "\nStatus: " + status);
                             window.location="/viewproduct";
                         });*/
-                    $.get("DelProduct/"+x, function(data, status){
+                    $.get("/DelProduct/"+x, function(data, status){
                         //alert("Data: " + data + "\nStatus: " + status);
 
                     });
                     $(this).ajaxStop(function(){ window.location.reload(); });
                 }
                 window.location.href ="http://localhost:9090/viewproduct";
+            }
+            function editProModal(x){
+                var product
+                $.get("/findOne/?id="+x, function(data, status){
+                    product=data;
+                    //alert("Data: " + product + product.id+"\nStatus: " + status);
+
+                });
+                $(this).ajaxStop(function(){
+                    $(".myForm #id").val(product.id);
+                    $(".myForm #name").val(product.name);
+                    $(".myForm #quantity").val(product.quantity);
+                    $(".myForm #unit").val(product.unit);
+                    $("#myModal").modal();
+                });
+
             }
         </script>
         <!-- Page Heading -->
@@ -52,7 +69,7 @@
                     <td align="left"   th:utext="${product.name}">...</td>
                     <td align="center" th:utext="${product.unit}">...</td>
                     <td align="right"  th:utext="${product.quantity}">...</td>
-                    <td align="right"><input type="submit" class="btn btn-info" value="Edit" name="update"  >
+                    <td align="right"><a class="btn btn-info" value="Edit" name="btnEdit"  th:href="'#'" th:onclick="'editProModal(\'' + ${product.id} + '\');'">Edit</a>
                         <input type="submit" class="btn btn-danger" value="Xóa" name="Delete" th:onclick="'DelProduct(\'' + ${product.id} + '\');'"></td>
                 </tr>
                 </tbody>
@@ -63,8 +80,52 @@
                        th:classappend="${currentPage}==${i}?'active':''" th:text="${i}+1">Active</a>
                 </li>
             </ul>
-        </div>
-    </div>
+        <div class="myForm">
+            <!-- The Modal -->
+            <form action="#" th:action="@{/save}" th:object="${productForm}" method="post" id="formEditPro">
+            <div class="modal" id="myModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">Update or Creating</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="idpro">ID:</label>
+                                <input type="text" class="form-control"   th:field="*{id}">
+                            </div>
+                            <div class="form-group">
+                                <label for="txt_name">Name:</label>
+                                <input type="text" class="form-control"   th:field="*{name}">
+                            </div>
+                            <div class="form-group">
+                                <label for="txt_unit">Unit:</label>
+                                <input type="text" class="form-control"   th:field="*{unit}">
+                            </div>
+                            <div class="form-group">
+                                <label for="txt_quantity">Quantity:</label>
+                                <input type="text" class="form-control"  th:field="*{quantity}">
+                            </div>
+                        </div>
+
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <input type="submit" class="btn btn-danger" value="Save">
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            </form>
+        </div><!-- end myForm-->
+        </div><!--- end row-->
+    </div><!--- end container-->
 
 </body>
 </html>

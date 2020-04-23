@@ -10,6 +10,7 @@ import vn.edu.hcmulsa.springboot_html.form.ProductForm;
 import vn.edu.hcmulsa.springboot_html.model.ProductEntity;
 import vn.edu.hcmulsa.springboot_html.repository.ProductRepository;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Product Controller
@@ -43,6 +44,7 @@ public class ProductController {
         if(page>0) page=page-1;
         model.addAttribute("products", this.productRepository.findAll(PageRequest.of(page,4)));
         model.addAttribute("currentPage",page);
+        model.addAttribute("productForm", new ProductForm());
         return "viewproduct";
     }
 
@@ -93,7 +95,18 @@ public class ProductController {
         this.productRepository.save(proEntity);
         return "resultproduct";
     }
-    public long countProduct(){
-        return this.productRepository.count();
+    @PostMapping("/save")
+    public String save(@ModelAttribute ProductForm productForm){
+        ProductEntity proEntity = productRepository.findById(productForm.getId()).get();
+        proEntity.setName(productForm.getName());
+        proEntity.setUnit(productForm.getUnit());
+        proEntity.setQuantity(productForm.getQuantity());
+        this.productRepository.save(proEntity);
+        return "redirect:/viewproduct";
+    }
+    @GetMapping("findOne")
+    @ResponseBody
+    public Optional<ProductEntity> findOne(Integer id){
+        return productRepository.findById(id);
     }
 }
